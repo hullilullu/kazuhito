@@ -1,6 +1,7 @@
 #include <iostream>
 #include "KazuhitoBoard.h"
 
+//evauate if one row passes the Kazuhito encryption check
 bool evaluate_row(uint8_t row[9]) {
 	bool present[9] = { false,false,false,false,
 			false,false,false,false,false };
@@ -8,45 +9,31 @@ bool evaluate_row(uint8_t row[9]) {
 		if (row[i] < 10 && row[i] > 0) {
 			
 			present[row[i] - 1] = true;
-			//std::cout << (int)row[i] << " " << ", ";// << present[row[i] - 1] << " : ";
 		}
 	}
-	//std::cout << std::endl;
 
-	/*
-	for (int i = 0; i < 9; i++) {
-		std::cout << present[i] << ", ";
-	}*/
-
-	//std::cout << std::endl;
 
 	for (int i = 0; i < 9; i++) {
 		if (present[i] == false) {
-			//std::cout << "failed";
-
 			return false;
 		}
 	}
-	//std::cout << "passed";
 
 	return true;
 }
 
-bool evaluate_box(uint8_t board[3][3]) {
-	return true;
-}
-
+//makes column into row for evaluation with row check function
 void column_to_row(uint8_t row[9], uint8_t board[9][9], int column_index) {
 	for (int i = 0; i < 9; i++) {
 		row[i] = board[i][column_index];
 	}
 }
 
+//makes box into row for evaluation with row check function
 void box_to_row(uint8_t row[9], uint8_t board[9][9], int box_index) {
 	for (int i = 0; i < 9; i++) {
 		int x = 3 * (box_index / 3) + i / 3;
 		int y = 3 * (box_index % 3) + (i % 3);
-		//std::cout << " x:" << x << "y:" << y << std::endl;
 		row[i] = board[x][y];
 	}
 }
@@ -85,6 +72,7 @@ void KazuhitoBoard::insert_value(int row, int column, uint8_t value) {
 	}
 }
 
+//finds all empty slots in a board and inserts an array of 8bit ints into all of them in order
 bool KazuhitoBoard::insert_into_all_empty(uint8_t *values, int num) {
 	int inserted_counter = 0;
 	int num_empty_counter = 0;
